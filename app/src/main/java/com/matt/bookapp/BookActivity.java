@@ -74,7 +74,7 @@ public class BookActivity extends Activity {
         super.onCreate(savedInstanceState);
         Cart cart = new Cart(books);
         cart.setBookList(books);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child("booklist");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("booklist");
         ref.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -105,27 +105,26 @@ public class BookActivity extends Activity {
         for (Map.Entry<String, Object> entry : BookList.entrySet()){
             Map book = (Map) entry.getValue();
             //Get phone field and append to list
-            books.add((String) book.get("name"));
-            String bookTitle = (String) book.get("name");
+            books.add((String) book.get("title"));
+            String bookTitle = (String) book.get("title");
             String bookAuthor = (String) book.get("author");
             String bookCategory = (String) book.get("category");
-            double bookPrice = (Double) book.get("price");
-            String bookDescription = (String) book.get("description");
-            int bookQuantity = (Integer) book.get("quantity");
-            Book newBook = new Book(bookTitle, bookAuthor, bookCategory, bookPrice, bookQuantity);
+            long bookPrice = (Long) book.get("price");
+            int bookQuantity = Integer.parseInt(Long.toString((Long) book.get("quantity")));
+            Book newBook = new Book(bookTitle, bookAuthor, bookCategory, Double.parseDouble(Long.toString(bookPrice)), bookQuantity);
             bookList.add(newBook);
             //Get user map
 
         }
-        LinearLayout layout = (LinearLayout)  findViewById(com.matt.bookapp.R.id.itemLayout);
+        LinearLayout layout = (LinearLayout)  findViewById(R.id.itemLayout);
         ShapeDrawable sd = new ShapeDrawable();
         sd.setShape(new RectShape());
         sd.getPaint().setColor(Color.GRAY);
         sd.getPaint().setStrokeWidth(10f);
         sd.getPaint().setStyle(Paint.Style.STROKE);
-        for(Book i : bookList){
+        for(final Book i : bookList){
             final Book newBook = i;
-            TextView view = new TextView(this);
+            final TextView view = new TextView(this);
             Button btn = new Button(this);
             view.setBackground(sd);
             view.setPadding(0,10,0,10);
@@ -133,10 +132,23 @@ public class BookActivity extends Activity {
             view.append("\n Book Author: " + i.getAuthor().toString());
             view.append("\n Category: " + i.getCategory().toString());
             view.append("\n Price: $" + Double.toString(i.getPrice()));
+            view.append("\n Quantity: " + Integer.toString(i.getQuantity()));
             btn.setText("Add " + i.getTitle().toString() + " to Cart");
             btn.setOnClickListener(new Button.OnClickListener(){
                 public void onClick(View v){
                     cart.getBookList().add(newBook);
+                    if(i.getQuantity()>0) {
+                        i.setQuantity(i.getQuantity() - 1);
+                        view.setText("");
+                        view.append("\n Book Title: " + i.getTitle().toString());
+                        view.append("\n Book Author: " + i.getAuthor().toString());
+                        view.append("\n Category: " + i.getCategory().toString());
+                        view.append("\n Price: $" + Double.toString(i.getPrice()));
+                        view.append("\n Quantity: " + Integer.toString(i.getQuantity()));
+                    }
+                    else
+                        Toast.makeText(getApplicationContext(), "Book is Sold Out", Toast.LENGTH_SHORT).show();
+
                 }
             });
             layout.addView(view);
@@ -145,7 +157,7 @@ public class BookActivity extends Activity {
         }
 
     }
-/*
+
     public void onCheckoutClick(View view){
        final Intent intent = new Intent(this, CartActivity.class);
         if(cart.getBookList().size() == 0){
@@ -156,6 +168,5 @@ public class BookActivity extends Activity {
             startActivity(intent);
         }
     }
-    */
 
 }

@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     if(task.isSuccessful()){
                         finish();
-                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                        startActivity(new Intent(getApplicationContext(), HomePageActivity.class));
                     } else {
                         Toast.makeText(MainActivity.this, "Registered Failed.. Try Again", Toast.LENGTH_SHORT).show();
                     }
