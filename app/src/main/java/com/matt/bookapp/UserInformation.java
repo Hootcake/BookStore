@@ -1,9 +1,4 @@
 package com.matt.bookapp;
-
-/**
- * Created by abdulaziz on 12/11/17.
- */
-
 public class UserInformation {
 
     public String name;

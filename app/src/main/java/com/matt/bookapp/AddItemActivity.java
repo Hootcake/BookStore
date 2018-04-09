@@ -1,9 +1,8 @@
 package com.matt.bookapp;
 
-
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,24 +10,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
-
+public class AddItemActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
 
     private TextView textViewUserEmail;
     private Button buttonLogout;
 
     private DatabaseReference databaseReference;
-    private EditText editTextName, editTextAddress, editTextCity, editTextCountry, editTextPhone;
+    private EditText editTextCategory, editTextTitle, editTextAuthor, editTextQuantity, editTextPrice;
     private Button buttonSave, buttonViewProfile;
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater menuInflater = getMenuInflater();
@@ -59,11 +55,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 return super.onOptionsItemSelected(item);
         }
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.matt.bookapp.R.layout.activity_profile);
+        setContentView(R.layout.activity_add_item);
         firebaseAuth = FirebaseAuth.getInstance();
 
         if(firebaseAuth.getCurrentUser() == null){
@@ -71,48 +66,28 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             startActivity(new Intent(this, LoginActivity.class));
         }
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        editTextName = (EditText) findViewById(com.matt.bookapp.R.id.editTextName);
-        editTextAddress = (EditText) findViewById(com.matt.bookapp.R.id.editTextAddress);
-        editTextCountry = (EditText) findViewById(com.matt.bookapp.R.id.editTextCountry);
-        editTextCity = (EditText) findViewById(com.matt.bookapp.R.id.editTextCity);
-        editTextPhone = (EditText) findViewById(com.matt.bookapp.R.id.editTextPhone);
-        buttonSave = (Button) findViewById(com.matt.bookapp.R.id.buttonSave);
-
+        editTextCategory = (EditText) findViewById(R.id.editTextCategory);
+        editTextTitle = (EditText) findViewById(R.id.editTextTitle);
+        editTextAuthor = (EditText) findViewById(R.id.editTextAuthor);
+        editTextQuantity = (EditText) findViewById(R.id.editTextQuantity);
+        editTextPrice = (EditText) findViewById(R.id.editTextPrice);
+        buttonSave = (Button) findViewById(R.id.buttonSaveBook);
         FirebaseUser user = firebaseAuth.getCurrentUser();
-
-        textViewUserEmail = (TextView) findViewById(com.matt.bookapp.R.id.textViewUserEmail);
-        textViewUserEmail.setText("Welcome, " + user.getEmail());
-
-        //buttonLogout = (Button) findViewById(R.id.buttonLogout);
-        // buttonViewProfile = (Button) findViewById(R.id.buttonViewProfile);
-        // buttonLogout.setOnClickListener(this);
-
-        buttonSave.setOnClickListener(this);
-
-        // buttonViewProfile.setOnClickListener(this);
     }
 
-    public void saveUser(){
-        String name = editTextName.getText().toString().trim();
-        String address = editTextAddress.getText().toString().trim();
-        String country = editTextCountry.getText().toString().trim();
-        String city = editTextCity.getText().toString().trim();
-        String phone = editTextPhone.getText().toString().trim();
-
-        UserInformation userInformation = new UserInformation(name, address, country, city, phone);
-
+    public void createItem(View view) {
+        double priceText = Double.parseDouble(editTextPrice.getText().toString().trim());
+        int quantityText = Integer.parseInt(editTextQuantity.getText().toString().trim());
+        String authorText = editTextAuthor.getText().toString().trim();
+        String categoryText = editTextCategory.getText().toString().trim();
+        String titleText = editTextTitle.getText().toString().trim();
+        Book book = new Book(titleText, authorText, categoryText, priceText, quantityText);
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        databaseReference.child("users").child(user.getUid()).child("userInfo").setValue(userInformation);
-        Toast.makeText(this, "Information Saved ...", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, PaymentActivity.class);
-        this.startActivity(intent);
-    }
-
-    @Override
-    public void onClick(View v) {
-
-        if(v == buttonSave){
-            saveUser();
-        }
+        databaseReference.child("booklist").child(book.getTitle()).setValue(book);
+        final Intent intent = new Intent(this, HomePageActivity.class);
+        startActivity(intent);
     }
 }
+

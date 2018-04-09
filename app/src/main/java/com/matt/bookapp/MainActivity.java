@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textViewSignIn.setOnClickListener(this);
     }
 
-    private void registeration(){
+    private void registration(){
 
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if(view == buttonRegister) {
-            registeration();
+            registration();
         }
 
         if (view == textViewSignIn){

@@ -6,22 +6,22 @@ import java.util.List;
 public class Cart implements Serializable {
     private static final long serialVersionUID = 1L;
     private double total;
-    private List<Item> itemList;
+    private List<Book> bookList;
 
-    public Cart(List<Item> items){
-        this.itemList = items;
+    public Cart(List<Book> books){
+        this.bookList = books;
     }
-    public Cart(double total, List<Item> itemList) {
-        this.itemList = itemList;
+    public Cart(double total, List<Book> bookList) {
+        this.bookList = bookList;
         this.total = total;
     }
 
-    public List<Item> getItemList() {
-        return itemList;
+    public List<Book> getBookList() {
+        return bookList;
     }
 
-    public void setItemList(List<Item> itemList) {
-        this.itemList = itemList;
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
     }
 
     public double getTotal() {

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddItemActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:id="@+id/textViewItemTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="New Book"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+        <EditText
+            android:layout_margin="15dp"
+            android:inputType="text"
+            android:id="@+id/editTextTitle"
+            android:hint="Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:layout_margin="15dp"
+            android:inputType="text"
+            android:id="@+id/editTextAuthor"
+            android:hint="Author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:layout_margin="15dp"
+            android:inputType="text"
+            android:id="@+id/editTextCategory"
+            android:hint="Category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/editTextPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:hint="Price"
+            android:inputType="text" />
+
+        <EditText
+            android:layout_margin="15dp"
+            android:inputType="text"
+            android:id="@+id/editTextQuantity"
+            android:hint="Quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonSaveBook"
+            android:text="Save"
+            android:layout_gravity="center_horizontal"
+            android:onClick="createItem"/>
+    </LinearLayout>
+</RelativeLayout>
+

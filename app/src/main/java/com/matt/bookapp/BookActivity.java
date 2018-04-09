@@ -29,10 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ItemActivity extends Activity {
-    List<Item> items = new ArrayList<Item>();
-    Cart cart = new Cart(items);
-    Item currentItem = new Item();
+public class BookActivity extends Activity {
+    List<Book> books = new ArrayList<Book>();
+    Cart cart = new Cart(books);
+    Book currentBook = new Book();
 
     private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth firebaseAuth;
@@ -45,8 +45,8 @@ public class ItemActivity extends Activity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem book){
+        switch (book.getItemId()){
             case com.matt.bookapp.R.id.editProfile:
                 finish();
                 Intent intent = new Intent(this, ProfileActivity.class);
@@ -54,7 +54,7 @@ public class ItemActivity extends Activity {
                 return true;
             case com.matt.bookapp.R.id.listItem:
                 finish();
-                Intent intent1 = new Intent(this, ItemActivity.class);
+                Intent intent1 = new Intent(this, BookActivity.class);
                 this.startActivity(intent1);
                 return true;
             case com.matt.bookapp.R.id.logout:
@@ -64,7 +64,7 @@ public class ItemActivity extends Activity {
                 this.startActivity(intent2);
                 return true;
             default:
-                return super.onOptionsItemSelected(item);
+                return super.onOptionsItemSelected(book);
 
         }
     }
@@ -72,16 +72,16 @@ public class ItemActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Cart cart = new Cart(items);
-        cart.setItemList(items);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child("ItemList");
+        Cart cart = new Cart(books);
+        cart.setBookList(books);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child("booklist");
         ref.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //Get map of users in datasnapshot
-                        collectItems((Map<String,Object>) dataSnapshot.getValue());
+                        collectBooks((Map<String,Object>) dataSnapshot.getValue());
                     }
 
                     @Override
@@ -97,20 +97,23 @@ public class ItemActivity extends Activity {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @SuppressLint("NewApi")
-    private void collectItems(Map<String,Object> ItemList) {
+    private void collectBooks(Map<String,Object> BookList) {
 
-        ArrayList<String> items = new ArrayList<>();
-        ArrayList<Item> itemList = new ArrayList<>();
+        ArrayList<String> books = new ArrayList<>();
+        ArrayList<Book> bookList = new ArrayList<>();
         //iterate through each user, ignoring their UID
-        for (Map.Entry<String, Object> entry : ItemList.entrySet()){
-            Map item = (Map) entry.getValue();
+        for (Map.Entry<String, Object> entry : BookList.entrySet()){
+            Map book = (Map) entry.getValue();
             //Get phone field and append to list
-            items.add((String) item.get("name"));
-            String itemName = (String) item.get("name");
-            long itemPrice = (Long) item.get("price");
-            String itemDescription = (String) item.get("description");
-            Item newItem = new Item(itemName, itemPrice, itemDescription);
-            itemList.add(newItem);
+            books.add((String) book.get("name"));
+            String bookTitle = (String) book.get("name");
+            String bookAuthor = (String) book.get("author");
+            String bookCategory = (String) book.get("category");
+            double bookPrice = (Double) book.get("price");
+            String bookDescription = (String) book.get("description");
+            int bookQuantity = (Integer) book.get("quantity");
+            Book newBook = new Book(bookTitle, bookAuthor, bookCategory, bookPrice, bookQuantity);
+            bookList.add(newBook);
             //Get user map
 
         }
@@ -120,20 +123,20 @@ public class ItemActivity extends Activity {
         sd.getPaint().setColor(Color.GRAY);
         sd.getPaint().setStrokeWidth(10f);
         sd.getPaint().setStyle(Paint.Style.STROKE);
-        for(Item i : itemList){
-            final Item newItem = i;
+        for(Book i : bookList){
+            final Book newBook = i;
             TextView view = new TextView(this);
             Button btn = new Button(this);
             view.setBackground(sd);
             view.setPadding(0,10,0,10);
-            view.append("\n Item Name: " + i.getName().toString());
-            view.append("\n Item Description: " + i.getDescription().toString());
-            view.append("\n Price: $" + Long.toString(i.getPrice()));
-            btn.setText("Add " + i.getName().toString() + " to Cart");
+            view.append("\n Book Title: " + i.getTitle().toString());
+            view.append("\n Book Author: " + i.getAuthor().toString());
+            view.append("\n Category: " + i.getCategory().toString());
+            view.append("\n Price: $" + Double.toString(i.getPrice()));
+            btn.setText("Add " + i.getTitle().toString() + " to Cart");
             btn.setOnClickListener(new Button.OnClickListener(){
                 public void onClick(View v){
-                    cart.getItemList().add(newItem);
-                    Toast.makeText(getApplicationContext(), newItem.getName() + " Added to cart", Toast.LENGTH_SHORT).show();
+                    cart.getBookList().add(newBook);
                 }
             });
             layout.addView(view);
@@ -145,7 +148,7 @@ public class ItemActivity extends Activity {
 /*
     public void onCheckoutClick(View view){
        final Intent intent = new Intent(this, CartActivity.class);
-        if(cart.getItemList().size() == 0){
+        if(cart.getBookList().size() == 0){
             Toast.makeText(getApplicationContext(), "Cart is Empty", Toast.LENGTH_SHORT).show();
         }
         else{

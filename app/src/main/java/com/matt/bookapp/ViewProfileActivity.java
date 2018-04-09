@@ -55,7 +55,7 @@ public class ViewProfileActivity extends AppCompatActivity{
                 return true;
             case com.matt.bookapp.R.id.listItem:
                 finish();
-                Intent intent1 = new Intent(this, ItemActivity.class);
+                Intent intent1 = new Intent(this, BookActivity.class);
                 this.startActivity(intent1);
                 return true;
             case com.matt.bookapp.R.id.logout:
@@ -81,11 +81,10 @@ public class ViewProfileActivity extends AppCompatActivity{
         databaseReference = firebaseDatabase.getReference();
         FirebaseUser user = firebaseAuth.getCurrentUser();
         userID = user.getUid();
-        System.out.println("reboot");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                showData(dataSnapshot);
+
             }
 
             @Override
@@ -102,11 +101,12 @@ public class ViewProfileActivity extends AppCompatActivity{
     private void showData(DataSnapshot dataSnapshot) {
         for(DataSnapshot ds : dataSnapshot.getChildren()){
             UserInformation userInf = new UserInformation();
-            userInf.setName(ds.child(userID).getValue(UserInformation.class).getName());
-            userInf.setAddress(ds.child(userID).getValue(UserInformation.class).getAddress());
-            userInf.setCountry(ds.child(userID).getValue(UserInformation.class).getCountry());
-            userInf.setCity(ds.child(userID).getValue(UserInformation.class).getCity());
-            userInf.setPhone(ds.child(userID).getValue(UserInformation.class).getPhone());
+
+            userInf.setName(ds.child(userID).child("userInfo").getValue(UserInformation.class).getName());
+            userInf.setAddress(ds.child(userID).child("userInfo").getValue(UserInformation.class).getAddress());
+            userInf.setCountry(ds.child(userID).child("userInfo").getValue(UserInformation.class).getCountry());
+            userInf.setCity(ds.child(userID).child("userInfo").getValue(UserInformation.class).getCity());
+            userInf.setPhone(ds.child(userID).child("userInfo").getValue(UserInformation.class).getPhone());
 
             Log.d(TAG, "show Data: name " + userInf.getName());
             Log.d(TAG, "show Data: Address " + userInf.getAddress());
@@ -123,6 +123,7 @@ public class ViewProfileActivity extends AppCompatActivity{
 
             ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, array);
             listView.setAdapter(adapter);
+
         }
     }
 

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PaymentActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".7">
+
+            <LinearLayout
+                android:id="@+id/payment_amount_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+
+            </LinearLayout>
+
+
+            <EditText
+                android:id="@+id/card_name"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/payment_amount_layout"
+                android:layout_marginTop="15dp"
+                android:hint="Cardholder's Name"
+                android:inputType="textPersonName"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingLeft="15dp" />
+
+            <EditText
+                android:id="@+id/card_number"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/card_name"
+                android:layout_marginTop="15dp"
+                android:hint="Card Number"
+                android:inputType="phone"
+                android:lines="1"
+                android:maxLength="19"
+                android:maxLines="1"
+                android:paddingLeft="15dp" />
+
+            <LinearLayout
+                android:id="@+id/expiry_date_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/card_number"
+                android:layout_marginTop="15dp"
+                android:weightSum="1">
+
+                <EditText
+                    android:id="@+id/expiry_date"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_below="@+id/card_name"
+                    android:layout_weight=".50"
+                    android:hint="Expiry Date"
+                    android:inputType="phone"
+                    android:lines="1"
+                    android:maxLength="7"
+                    android:maxLines="1"
+                    android:paddingLeft="15dp" />
+
+                <android.support.v4.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".05" />
+
+                <EditText
+                    android:id="@+id/cvc"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_weight=".45"
+                    android:hint="CCV"
+                    android:inputType="phone"
+                    android:lines="1"
+                    android:maxLength="3"
+                    android:maxLines="1"
+                    android:paddingLeft="15dp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_pay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/expiry_date_layout"
+                android:layout_marginTop="15dp"
+                android:padding="5dp"
+                android:text="Confirm"
+                android:textColor="@android:color/white"
+                android:onClick="onSuccessfulPaymentClick"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>
