@@ -6,18 +6,19 @@ public class Book implements Serializable{
     private String title, author, category;
     private double price;
     private int quantity;
-
+    private String imageUri;
 
     public Book(){
 
     }
 
-    public Book(String title, String author, String category, double price, int quantity){
+    public Book(String title, String author, String category, double price, int quantity, String imageUri){
         this.title = title;
         this.author = author;
         this.category = category;
         this.price = price;
         this.quantity = quantity;
+        this.imageUri = imageUri;
     }
 
     public String getCategory(){
@@ -38,6 +39,8 @@ public class Book implements Serializable{
 
     public int getQuantity() { return quantity; }
 
+    public String getImageUri() { return imageUri; }
+
     public void setTitle(String title){
         this.title = title;
     }
@@ -55,4 +58,5 @@ public class Book implements Serializable{
     }
 
     public void setQuantity(int quantity) { this.quantity = quantity; }
+    public void setImageUri(String imageUri){this.imageUri = imageUri;}
 }

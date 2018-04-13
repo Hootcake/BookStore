@@ -1,11 +1,13 @@
 package com.matt.bookapp;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -13,11 +15,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -111,7 +116,8 @@ public class BookActivity extends Activity {
             String bookCategory = (String) book.get("category");
             long bookPrice = (Long) book.get("price");
             int bookQuantity = Integer.parseInt(Long.toString((Long) book.get("quantity")));
-            Book newBook = new Book(bookTitle, bookAuthor, bookCategory, Double.parseDouble(Long.toString(bookPrice)), bookQuantity);
+            String bookImage = (String) book.get("imageUri");
+            Book newBook = new Book(bookTitle, bookAuthor, bookCategory, Double.parseDouble(Long.toString(bookPrice)), bookQuantity, bookImage);
             bookList.add(newBook);
             //Get user map
 
@@ -133,6 +139,9 @@ public class BookActivity extends Activity {
             view.append("\n Category: " + i.getCategory().toString());
             view.append("\n Price: $" + Double.toString(i.getPrice()));
             view.append("\n Quantity: " + Integer.toString(i.getQuantity()));
+            ImageView iView = new ImageView(this);
+            Glide.with(this).load(i.getImageUri()).into(iView);
+
             btn.setText("Add " + i.getTitle().toString() + " to Cart");
             btn.setOnClickListener(new Button.OnClickListener(){
                 public void onClick(View v){
@@ -145,12 +154,15 @@ public class BookActivity extends Activity {
                         view.append("\n Category: " + i.getCategory().toString());
                         view.append("\n Price: $" + Double.toString(i.getPrice()));
                         view.append("\n Quantity: " + Integer.toString(i.getQuantity()));
+
                     }
                     else
                         Toast.makeText(getApplicationContext(), "Book is Sold Out", Toast.LENGTH_SHORT).show();
 
                 }
             });
+
+            layout.addView(iView);
             layout.addView(view);
             layout.addView(btn);
 
@@ -168,5 +180,9 @@ public class BookActivity extends Activity {
             startActivity(intent);
         }
     }
-
+    public String getActualImage(Uri uri){
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return  mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
 }

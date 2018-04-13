@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by matth on 14/12/2017.
@@ -83,11 +84,24 @@ public class CartActivity extends Activity {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         FirebaseUser user = firebaseAuth.getCurrentUser();
         for (final Book book : cartItems) {
-            databaseReference.child("booklist").child(book.getTitle()).setValue(book);
+            databaseReference.child("users").child(user.getUid()).child("purchaseHistory").child(randomString()).setValue(book);
         }
-
+        databaseReference.child("users").child(user.getUid()).child("purchaseHistory").child(randomString()).setValue(cartItems);
         final Intent intent = new Intent(this, HomePageActivity.class);
 
         startActivity(intent);
+    }
+
+    protected String randomString() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 10) {
+            int index = (int) (rnd.nextFloat() * chars.length());
+            salt.append(chars.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
+
     }
 }

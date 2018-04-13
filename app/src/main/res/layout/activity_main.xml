@@ -55,7 +55,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:text="Already Registered? Sign-In"
+            android:text="Already Registered? Sign-In by tapping here"
             android:textAlignment="center"
             android:id="@+id/textViewSignIn"
             android:layout_width="match_parent"

@@ -55,7 +55,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:text="Do not have account? SignUp here"
+            android:text="Not Registered? Sign up by tapping here"
             android:textAlignment="center"
             android:id="@+id/textViewSignUp"
             android:layout_width="match_parent"

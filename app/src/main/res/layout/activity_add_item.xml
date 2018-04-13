@@ -4,15 +4,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddItemActivity">
-
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="browseImages"
+            android:text="Browse Image" />
 
+        <ImageView
+            android:id="@+id/insertImages"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="uploadData"
+            android:text="Upload Data" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="viewAllData"
+            android:text="View All Data" />
         <TextView
             android:id="@+id/textViewItemTitle"
             android:layout_width="match_parent"
@@ -62,14 +85,14 @@
             android:hint="Quantity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            android:id="@+id/ShowImageView"
+            android:layout_below="@+id/textview"
+            android:layout_marginTop="20dp"/>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/buttonSaveBook"
-            android:text="Save"
-            android:layout_gravity="center_horizontal"
-            android:onClick="createItem"/>
     </LinearLayout>
+</ScrollView>
 </RelativeLayout>
 
