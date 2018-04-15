@@ -12,12 +12,34 @@
 
         <Button
             android:id="@+id/checkout"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onCheckoutClick"
             android:text="Checkout" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/sortByAuthor"
+            android:layout_width="wrap_content"
+            android:text="Order By Author"
+            android:layout_height="wrap_content"
+            />
+        <Button
+            android:id="@+id/sortByPrice"
+            android:layout_width="wrap_content"
+            android:text="Order By Price"
+            android:layout_height="wrap_content"
+            />
+        <Button
+            android:id="@+id/sortByTitle"
+            android:layout_width="wrap_content"
+            android:text="Order By Title"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
 
     <ScrollView
         android:id="@+id/itemView"

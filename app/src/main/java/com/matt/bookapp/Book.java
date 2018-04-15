@@ -7,9 +7,27 @@ public class Book implements Serializable{
     private double price;
     private int quantity;
     private String imageUri;
-
+    private String key;
     public Book(){
 
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public Book(String key, String title, String author, String category, double price, int quantity, String imageUri){
+        this.key = key;
+        this.title = title;
+        this.author = author;
+        this.category = category;
+        this.price = price;
+        this.quantity = quantity;
+        this.imageUri = imageUri;
     }
 
     public Book(String title, String author, String category, double price, int quantity, String imageUri){

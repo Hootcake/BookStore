@@ -12,11 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/editTextUserUid"
+        android:hint="Enter user UID"
         />
 
     <Button
         android:layout_margin="15dp"
-        android:text="Stock Items"
+        android:text="Check Purchase History"
         android:id="@+id/purchaseHistory"
         android:layout_toRightOf="@id/editTextUserUid"
         android:layout_width="match_parent"

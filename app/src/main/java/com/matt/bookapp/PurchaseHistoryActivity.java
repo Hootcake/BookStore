@@ -183,7 +183,7 @@ public class PurchaseHistoryActivity extends AppCompatActivity {
                             final TextView bookView = new TextView(getApplicationContext());
                             bookView.setPadding(0, 10, 0, 10);
                             int i = 0;
-                            bookView.append("\n User's Name: " + userEmail);
+                            bookView.append("\n\n User's Name: " + userEmail);
                             for (final ArrayList<Book> order : bookList) {
                                 i++;
                                 bookView.append("\nOrder Number: " + i + "\n");

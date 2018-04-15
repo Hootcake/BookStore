@@ -120,6 +120,7 @@ public class CartActivity extends Activity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         for (final Book book : cartItems) {
             databaseReference.child("users").child(user.getUid()).child("purchaseHistory").child(randomString()).setValue(book);
+            databaseReference.child("booklist").child(book.getKey()).setValue(book);
         }
         databaseReference.child("users").child(user.getUid()).child("purchaseHistory").child(randomString()).setValue(cartItems);
         final Intent intent = new Intent(this, HomePageActivity.class);

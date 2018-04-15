@@ -28,9 +28,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +42,7 @@ public class BookActivity extends Activity {
     Cart cart = new Cart(books);
     Book currentBook = new Book();
 
+    ArrayList<Book> bookList = new ArrayList<>();
     private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth firebaseAuth;
 
@@ -99,36 +103,63 @@ public class BookActivity extends Activity {
         setContentView(com.matt.bookapp.R.layout.activity_item);
 
     }
+    public void sortBooks(View view){
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("booklist");
+        Query q = null;
+        switch(view.getId()) {
+            case R.id.sortByPrice:
+            q  = ref.orderByChild("author");
+        }
+        q.addValueEventListener(
+            new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Get map of users in datasnapshot
+                collectBooks((Map<String,Object>) dataSnapshot.getValue());
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //handle databaseError
+            }
+        });
+
+
+    }
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @SuppressLint("NewApi")
     private void collectBooks(Map<String,Object> BookList) {
 
-        ArrayList<String> books = new ArrayList<>();
-        ArrayList<Book> bookList = new ArrayList<>();
+        bookList = new ArrayList<Book>();
         //iterate through each user, ignoring their UID
         for (Map.Entry<String, Object> entry : BookList.entrySet()){
             Map book = (Map) entry.getValue();
+            String key = entry.getKey();
             //Get phone field and append to list
-            books.add((String) book.get("title"));
             String bookTitle = (String) book.get("title");
             String bookAuthor = (String) book.get("author");
             String bookCategory = (String) book.get("category");
             long bookPrice = (Long) book.get("price");
             int bookQuantity = Integer.parseInt(Long.toString((Long) book.get("quantity")));
             String bookImage = (String) book.get("imageUri");
-            Book newBook = new Book(bookTitle, bookAuthor, bookCategory, Double.parseDouble(Long.toString(bookPrice)), bookQuantity, bookImage);
+            Book newBook = new Book(key, bookTitle, bookAuthor, bookCategory, Double.parseDouble(Long.toString(bookPrice)), bookQuantity, bookImage);
             bookList.add(newBook);
-            //Get user map
+
 
         }
+        viewSetup(bookList);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    public void viewSetup(ArrayList<Book> BookList){
         LinearLayout layout = (LinearLayout)  findViewById(R.id.itemLayout);
+        layout.removeAllViews();
         ShapeDrawable sd = new ShapeDrawable();
         sd.setShape(new RectShape());
         sd.getPaint().setColor(Color.GRAY);
         sd.getPaint().setStrokeWidth(10f);
         sd.getPaint().setStyle(Paint.Style.STROKE);
-        for(final Book i : bookList){
+        for(final Book i : BookList){
             final Book newBook = i;
             final TextView view = new TextView(this);
             Button btn = new Button(this);
@@ -161,6 +192,45 @@ public class BookActivity extends Activity {
 
                 }
             });
+            Button sortAuthor = (Button) findViewById(R.id.sortByAuthor);
+            sortAuthor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Collections.sort(bookList, new Comparator<Book>() {
+                        @Override
+                        public int compare(Book book, Book t1) {
+                            return book.getAuthor().toLowerCase().compareTo(t1.getAuthor().toLowerCase());
+                        }
+                    });
+                    viewSetup(bookList);
+                }
+            });
+            Button sortPrice = (Button) findViewById(R.id.sortByPrice);
+            sortPrice.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Collections.sort(bookList, new Comparator<Book>() {
+                        @Override
+                        public int compare(Book book, Book t1) {
+                            return Double.compare(book.getPrice(), t1.getPrice());
+                        }
+                    });
+                    viewSetup(bookList);
+                }
+            });
+            Button sortTitle = (Button) findViewById(R.id.sortByTitle);
+            sortTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Collections.sort(bookList, new Comparator<Book>() {
+                        @Override
+                        public int compare(Book book, Book t1) {
+                            return book.getTitle().toLowerCase().compareTo(t1.getTitle().toLowerCase());
+                        }
+                    });
+                    viewSetup(bookList);
+                }
+            });
 
             layout.addView(iView);
             layout.addView(view);
@@ -169,7 +239,6 @@ public class BookActivity extends Activity {
         }
 
     }
-
     public void onCheckoutClick(View view){
        final Intent intent = new Intent(this, CartActivity.class);
         if(cart.getBookList().size() == 0){
