@@ -139,7 +139,7 @@ public class AddItemActivity extends AppCompatActivity {
 
                     String id = databaseReference.push().getKey();
 
-                    databaseReference.child("booklist").child(id).setValue(book);
+                    databaseReference.child("booklist").child(titleText).setValue(book);
 
                     progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(),"Data uploaded",Toast.LENGTH_LONG).show();

@@ -10,6 +10,9 @@ import android.graphics.drawable.shapes.RectShape;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -29,6 +32,38 @@ import java.util.Random;
  */
 
 public class CartActivity extends Activity {
+        public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(com.matt.bookapp.R.menu.main_menu, menu);
+        return true;
+        }
+        private FirebaseAuth firebaseAuth;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case com.matt.bookapp.R.id.editProfile:
+                finish();
+                Intent intent = new Intent(this, ProfileActivity.class);
+                this.startActivity(intent);
+                return true;
+            case com.matt.bookapp.R.id.listItem:
+                finish();
+                Intent intent1 = new Intent(this, BookActivity.class);
+                this.startActivity(intent1);
+                return true;
+            case com.matt.bookapp.R.id.logout:
+                firebaseAuth.signOut();
+                finish();
+                Intent intent2 = new Intent(this, LoginActivity.class);
+                this.startActivity(intent2);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {

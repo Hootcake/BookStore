@@ -69,13 +69,20 @@ public class HomePageActivity extends AppCompatActivity{
         FirebaseUser user = firebaseAuth.getCurrentUser();
         userID = user.getUid();
         if(userID.equals("KFuVqg2XBieNKqiY1Df5Ql7mPpy2")) {
-            Button btn = (Button) findViewById(R.id.stockItems);
-            btn.setVisibility(View.VISIBLE);
+            Button stockBtn = (Button) findViewById(R.id.stockItems);
+            stockBtn.setVisibility(View.VISIBLE);
+            Button historyBtn = (Button) findViewById(R.id.purchaseHistory);
+            historyBtn.setVisibility(View.VISIBLE);
         }
     }
 
     public void addItem(View view) {
         final Intent intent = new Intent(this, AddItemActivity.class);
+        startActivity(intent);
+    }
+
+    public void purchaseHistory(View view) {
+        final Intent intent  = new Intent(this, PurchaseHistoryActivity.class);
         startActivity(intent);
     }
 }
