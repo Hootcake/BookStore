@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,68 +86,6 @@ public class PurchaseHistoryActivity extends AppCompatActivity {
 
 
     }
-/*
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    private void collectHistory(Map<String, Object> PurchaseHistory) {
-        ArrayList<Book> bookList = new ArrayList<>();
-        //iterate through each user, ignoring their UID
-        for (Map.Entry<String, Object> entry : PurchaseHistory.entrySet()) {
-            Map user = (Map) entry.getValue();
-            //Get phone field and append to list
-            String userEmail = (String) user.get("userInfo");
-            long bookPrice = (Long) book.get("price");
-            int bookQuantity = Integer.parseInt(Long.toString((Long) book.get("quantity")));
-            String bookImage = (String) book.get("imageUri");
-            Book newBook = new Book(bookTitle, bookAuthor, bookCategory, Double.parseDouble(Long.toString(bookPrice)), bookQuantity, bookImage);
-            bookList.add(newBook);
-            //Get user map
-
-        }
-        LinearLayout layout = (LinearLayout) findViewById(R.id.historyLayout);
-        ShapeDrawable sd = new ShapeDrawable();
-        sd.setShape(new RectShape());
-        sd.getPaint().setColor(Color.GRAY);
-        sd.getPaint().setStrokeWidth(10f);
-        sd.getPaint().setStyle(Paint.Style.STROKE);
-        for (final Book i : bookList) {
-            final Book newBook = i;
-            final TextView view = new TextView(this);
-            Button btn = new Button(this);
-            view.setBackground(sd);
-            view.setPadding(0, 10, 0, 10);
-            view.append("\n Book Title: " + i.getTitle().toString());
-            view.append("\n Book Author: " + i.getAuthor().toString());
-            view.append("\n Category: " + i.getCategory().toString());
-            view.append("\n Price: $" + Double.toString(i.getPrice()));
-            view.append("\n Quantity: " + Integer.toString(i.getQuantity()));
-            ImageView iView = new ImageView(this);
-            Glide.with(this).load(i.getImageUri()).into(iView);
-
-            btn.setText("Add " + i.getTitle().toString() + " to Cart");
-            btn.setOnClickListener(new Button.OnClickListener() {
-                public void onClick(View v) {
-                    cart.getBookList().add(newBook);
-                    if (i.getQuantity() > 0) {
-                        i.setQuantity(i.getQuantity() - 1);
-                        view.setText("");
-                        view.append("\n Book Title: " + i.getTitle().toString());
-                        view.append("\n Book Author: " + i.getAuthor().toString());
-                        view.append("\n Category: " + i.getCategory().toString());
-                        view.append("\n Price: $" + Double.toString(i.getPrice()));
-                        view.append("\n Quantity: " + Integer.toString(i.getQuantity()));
-
-                    } else
-                        Toast.makeText(getApplicationContext(), "Book is Sold Out", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-
-            layout.addView(iView);
-            layout.addView(view);
-            layout.addView(btn);
-
-        }
-    }*/
 
     public void purchaseHistory(View view) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users");
@@ -176,19 +115,18 @@ public class PurchaseHistoryActivity extends AppCompatActivity {
                                 bookList.add(ordersBooks);
                             }
 
-                            LinearLayout layout = (LinearLayout) findViewById(R.id.historyLayout);
+                            ScrollView layout = (ScrollView) findViewById(R.id.historyLayout);
                             layout.removeAllViews();
-
                             Button btn = new Button(getApplicationContext());
                             final TextView bookView = new TextView(getApplicationContext());
                             bookView.setPadding(0, 10, 0, 10);
                             int i = 0;
-                            bookView.append("\n\n User's Name: " + userEmail);
+                            bookView.append("\n User's Name: " + userEmail);
                             for (final ArrayList<Book> order : bookList) {
                                 i++;
-                                bookView.append("\nOrder Number: " + i + "\n");
+                                bookView.append("\n\nOrder Number: " + i + "\n");
                                 for(Book book: order){
-                                    bookView.append("\n Book Title:" + book.getTitle().toString());
+                                    bookView.append("\n\n Book Title:" + book.getTitle().toString());
                                     bookView.append("\n Book Author: " + book.getAuthor().toString());
                                     bookView.append("\n Category: " + book.getCategory().toString());
                                     bookView.append("\n Price: $" + Double.toString(book.getPrice()));

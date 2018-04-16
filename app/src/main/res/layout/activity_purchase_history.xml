@@ -12,25 +12,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/editTextUserUid"
-        android:hint="Enter user UID"
+        android:hint="Enter UID"
         />
 
     <Button
         android:layout_margin="15dp"
-        android:text="Check Purchase History"
+        android:text="Check History"
         android:id="@+id/purchaseHistory"
         android:layout_toRightOf="@id/editTextUserUid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="purchaseHistory"/>
-    <LinearLayout
+    <ScrollView
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/historyLayout">
-    </LinearLayout>
+    </ScrollView>
     </LinearLayout>
 </RelativeLayout>
 

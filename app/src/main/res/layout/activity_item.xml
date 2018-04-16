@@ -16,6 +16,12 @@
             android:layout_height="wrap_content"
             android:onClick="onCheckoutClick"
             android:text="Checkout" />
+        <Button
+            android:id="@+id/clearButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset"
+            android:onClick="boo"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"

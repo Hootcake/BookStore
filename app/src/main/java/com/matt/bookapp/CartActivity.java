@@ -105,10 +105,21 @@ public class CartActivity extends Activity {
                     double newTotal = currentTotal - currentItem.getPrice();
                     tvTotal.setText("Total Cost:            $" + newTotal);
                     Toast.makeText(getApplicationContext(), currentItem.getTitle() + " Removed from cart", Toast.LENGTH_SHORT).show();
+                    discountBookCount(cart, newTotal);
                 }
             });
         }
         total.setText("Total Cost:          $" + basketTotal+'0');
+        discountBookCount(cart, basketTotal);
+    }
+
+    private void discountBookCount(Cart cart, double total) {
+        TextView basketTotal = (TextView) findViewById(R.id.basketTotal);
+        int size = cart.getBookList().size();
+        if(size >= 10){
+            total = total * .9;
+            basketTotal.setText("Total Cost:          $" + total+'0');
+        }
     }
 
     public void onPaymentClick(View view) {
@@ -119,7 +130,6 @@ public class CartActivity extends Activity {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         FirebaseUser user = firebaseAuth.getCurrentUser();
         for (final Book book : cartItems) {
-            databaseReference.child("users").child(user.getUid()).child("purchaseHistory").child(randomString()).setValue(book);
             databaseReference.child("booklist").child(book.getKey()).setValue(book);
         }
         databaseReference.child("users").child(user.getUid()).child("purchaseHistory").child(randomString()).setValue(cartItems);

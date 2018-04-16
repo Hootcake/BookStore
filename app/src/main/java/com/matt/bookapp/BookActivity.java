@@ -45,6 +45,8 @@ public class BookActivity extends Activity {
     ArrayList<Book> bookList = new ArrayList<>();
     private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth firebaseAuth;
+    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("booklist");
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -83,26 +85,38 @@ public class BookActivity extends Activity {
         super.onCreate(savedInstanceState);
         Cart cart = new Cart(books);
         cart.setBookList(books);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("booklist");
-        ref.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        //Get map of users in datasnapshot
-                        collectBooks((Map<String,Object>) dataSnapshot.getValue());
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //handle databaseError
-                    }
-                });
 
         // Set the layout for the layout we created
         setContentView(com.matt.bookapp.R.layout.activity_item);
-
+        bookListSetup();
+        Button reset = (Button) findViewById(R.id.clearButton);
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bookListSetup();
+            }
+        });
+         bookListSetup();
     }
+
+    private void bookListSetup(){
+        ref.addListenerForSingleValueEvent(
+            new ValueEventListener() {
+                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //Get map of users in datasnapshot
+                    collectBooks((Map<String,Object>) dataSnapshot.getValue());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    //handle databaseError
+                }
+            });
+    }
+
+
     public void sortBooks(View view){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("booklist");
         Query q = null;
@@ -254,4 +268,6 @@ public class BookActivity extends Activity {
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return  mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
+
+
 }
