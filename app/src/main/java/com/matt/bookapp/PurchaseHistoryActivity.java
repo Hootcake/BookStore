@@ -109,7 +109,15 @@ public class PurchaseHistoryActivity extends AppCompatActivity {
                                     String bookAuthor = (String) purchase.child("author").getValue().toString();
                                     String bookCategory = (String) purchase.child("category").getValue().toString();
                                     long bookPrice = (Long) purchase.child("price").getValue();
-                                    Book newBook = new Book(bookTitle, bookAuthor, bookCategory, Double.parseDouble(Long.toString(bookPrice)), 0, "");
+                                    List<Comments> c = new ArrayList<Comments>();
+                                    for(DataSnapshot comments:purchase.child("comments").getChildren()){
+                                        String commentContent = (String) comments.child("comment").getValue().toString();
+                                        int rating = ((Long) comments.child("stars").getValue()).intValue();
+                                        Comments comment = new Comments(commentContent, rating);
+                                        c.add(comment);
+
+                                    }
+                                    Book newBook = new Book(bookTitle, bookAuthor, bookCategory, Double.parseDouble(Long.toString(bookPrice)), 0, "", c);
                                     ordersBooks.add(newBook);
                                 }
                                 bookList.add(ordersBooks);
@@ -130,6 +138,13 @@ public class PurchaseHistoryActivity extends AppCompatActivity {
                                     bookView.append("\n Book Author: " + book.getAuthor().toString());
                                     bookView.append("\n Category: " + book.getCategory().toString());
                                     bookView.append("\n Price: $" + Double.toString(book.getPrice()));
+                                    if(book.getComments() != null) {
+                                        for (Comments c : book.getComments()) {
+                                            bookView.append("\n Review: ");
+                                            bookView.append("\n Rating: " + c.getStars() + " / 5");
+                                            bookView.append("\n Comment: " + c.getComment());
+                                        }
+                                    }
                                 }
                             }
                                 layout.addView(bookView);

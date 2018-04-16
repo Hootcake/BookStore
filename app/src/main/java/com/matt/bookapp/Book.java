@@ -1,5 +1,7 @@
 package com.matt.bookapp;
 import java.io.Serializable;
+import java.util.List;
+
 public class Book implements Serializable{
 
     private static final long serialVersionUID = 1L;
@@ -8,6 +10,7 @@ public class Book implements Serializable{
     private int quantity;
     private String imageUri;
     private String key;
+    private List<Comments> comments;
     public Book(){
 
     }
@@ -37,6 +40,15 @@ public class Book implements Serializable{
         this.price = price;
         this.quantity = quantity;
         this.imageUri = imageUri;
+    }
+    public Book(String title, String author, String category, double price, int quantity, String imageUri, List<Comments> comments){
+        this.title = title;
+        this.author = author;
+        this.category = category;
+        this.price = price;
+        this.quantity = quantity;
+        this.imageUri = imageUri;
+        this.comments = comments;
     }
 
     public String getCategory(){
@@ -73,6 +85,14 @@ public class Book implements Serializable{
 
     public void setCategory(String category){
         this.category = category;
+    }
+
+    public List<Comments> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comments> comments) {
+        this.comments = comments;
     }
 
     public void setQuantity(int quantity) { this.quantity = quantity; }

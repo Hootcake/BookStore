@@ -97,7 +97,7 @@ public class BookActivity extends Activity {
                 bookListSetup();
             }
         });
-         bookListSetup();
+        bookListSetup();
     }
 
     private void bookListSetup(){
@@ -123,22 +123,22 @@ public class BookActivity extends Activity {
         Query q = null;
         switch(view.getId()) {
             case R.id.sortByPrice:
-            q  = ref.orderByChild("author");
+                q  = ref.orderByChild("author");
         }
         q.addValueEventListener(
             new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //Get map of users in datasnapshot
-                collectBooks((Map<String,Object>) dataSnapshot.getValue());
-            }
+                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //Get map of users in datasnapshot
+                    collectBooks((Map<String,Object>) dataSnapshot.getValue());
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                //handle databaseError
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    //handle databaseError
+                }
+            });
 
 
     }
@@ -299,7 +299,7 @@ public class BookActivity extends Activity {
 
     }
     public void onCheckoutClick(View view){
-       final Intent intent = new Intent(this, CartActivity.class);
+        final Intent intent = new Intent(this, CartActivity.class);
         if(cart.getBookList().size() == 0){
             Toast.makeText(getApplicationContext(), "Cart is Empty", Toast.LENGTH_SHORT).show();
         }

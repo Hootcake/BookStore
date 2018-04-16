@@ -15,7 +15,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -85,7 +88,10 @@ public class CartActivity extends Activity {
             final TextView tvTotal = total;
             final LinearLayout currentLayout = layout;
             final Book currentItem = book;
-            TextView view = new TextView(this);
+            final EditText comment = new EditText(this);
+            final RatingBar rating = new RatingBar(this);
+            Button submitComment = new Button(this);
+            final TextView view = new TextView(this);
             Button btn = new Button(this);
             view.setBackground(sd);
             view.setPadding(0, 10, 0, 10);
@@ -96,6 +102,9 @@ public class CartActivity extends Activity {
             layout.addView(view);
             btn.setText("Remove " + book.getTitle().toString() + " from Cart");
             layout.addView(btn);
+            layout.addView(comment);
+            layout.addView(rating);
+            layout.addView(submitComment);
             final Button currentBtn = btn;
             final TextView currentView = view;
             btn.setOnClickListener(new Button.OnClickListener() {
@@ -107,6 +116,16 @@ public class CartActivity extends Activity {
                     tvTotal.setText("Total Cost:            $" + newTotal);
                     Toast.makeText(getApplicationContext(), currentItem.getTitle() + " Removed from cart", Toast.LENGTH_SHORT).show();
                     discountBookCount(cart, newTotal);
+                }
+            });
+            submitComment.setOnClickListener(new Button.OnClickListener(){
+                public void onClick(View v){;
+                    if(book.getComments()==null){
+                        List<Comments> comments = new ArrayList<Comments>();
+                        book.setComments(comments);
+                    }
+                    Comments c = new Comments(comment.getText().toString(), rating.getNumStars());
+                    book.getComments().add(c);
                 }
             });
         }
