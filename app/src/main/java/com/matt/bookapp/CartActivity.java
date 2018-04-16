@@ -91,6 +91,7 @@ public class CartActivity extends Activity {
             final EditText comment = new EditText(this);
             final RatingBar rating = new RatingBar(this);
             Button submitComment = new Button(this);
+            submitComment.setText("Submit Review");
             final TextView view = new TextView(this);
             Button btn = new Button(this);
             view.setBackground(sd);
