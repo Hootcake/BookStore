@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reset"
-            android:onClick="boo"/>
+            />
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -45,8 +45,40 @@
             android:layout_height="wrap_content"
             />
     </LinearLayout>
-
-
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchParm"
+            android:hint="Input your search here, then hit a button below"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search by: "
+            android:textSize="20dp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/authorSearch"
+            android:text="Author"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/titleSearch"
+            android:text="Title"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/categorySearch"
+            android:text="Category"/>
+    </LinearLayout>
     <ScrollView
         android:id="@+id/itemView"
         android:layout_width="match_parent"

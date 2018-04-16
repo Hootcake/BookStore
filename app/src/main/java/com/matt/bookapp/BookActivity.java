@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -164,7 +166,7 @@ public class BookActivity extends Activity {
         viewSetup(bookList);
     }
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    public void viewSetup(ArrayList<Book> BookList){
+    public void viewSetup(final ArrayList<Book> BookList){
         LinearLayout layout = (LinearLayout)  findViewById(R.id.itemLayout);
         layout.removeAllViews();
         ShapeDrawable sd = new ShapeDrawable();
@@ -209,41 +211,85 @@ public class BookActivity extends Activity {
             sortAuthor.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Collections.sort(bookList, new Comparator<Book>() {
+                    Collections.sort(BookList, new Comparator<Book>() {
                         @Override
                         public int compare(Book book, Book t1) {
                             return book.getAuthor().toLowerCase().compareTo(t1.getAuthor().toLowerCase());
                         }
                     });
-                    viewSetup(bookList);
+                    viewSetup(BookList);
                 }
             });
             Button sortPrice = (Button) findViewById(R.id.sortByPrice);
             sortPrice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Collections.sort(bookList, new Comparator<Book>() {
+                    Collections.sort(BookList, new Comparator<Book>() {
                         @Override
                         public int compare(Book book, Book t1) {
                             return Double.compare(book.getPrice(), t1.getPrice());
                         }
                     });
-                    viewSetup(bookList);
+                    viewSetup(BookList);
                 }
             });
             Button sortTitle = (Button) findViewById(R.id.sortByTitle);
             sortTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Collections.sort(bookList, new Comparator<Book>() {
+                    Collections.sort(BookList, new Comparator<Book>() {
                         @Override
                         public int compare(Book book, Book t1) {
                             return book.getTitle().toLowerCase().compareTo(t1.getTitle().toLowerCase());
                         }
                     });
-                    viewSetup(bookList);
+                    viewSetup(BookList);
                 }
             });
+
+            Button searchAuthor = (Button) findViewById(R.id.authorSearch);
+            searchAuthor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ArrayList<Book> authorList = new ArrayList<Book>();
+                    EditText parm = (EditText) findViewById(R.id.searchParm);
+                    for(Book i : bookList){
+                        if (i.getAuthor().indexOf(parm.getText().toString())>=0)
+                            authorList.add(i);
+                    }
+                    viewSetup(authorList);
+                }
+            });
+
+            Button searchTitle = (Button) findViewById(R.id.titleSearch);
+            searchTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ArrayList<Book> titleList = new ArrayList<Book>();
+                    EditText parm = (EditText) findViewById(R.id.searchParm);
+                    for(Book i : bookList){
+                        if (i.getTitle().indexOf(parm.getText().toString())>=0)
+                            titleList.add(i);
+                    }
+                    viewSetup(titleList);
+                }
+            });
+
+            Button searchCategory = (Button) findViewById(R.id.categorySearch);
+            searchCategory.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ArrayList<Book> categoryList = new ArrayList<Book>();
+                    EditText parm = (EditText) findViewById(R.id.searchParm);
+                    for(Book i : bookList){
+                        if (i.getCategory().indexOf(parm.getText().toString())>=0)
+                            categoryList.add(i);
+                    }
+                    viewSetup(categoryList);
+                }
+            });
+
+
 
             layout.addView(iView);
             layout.addView(view);
