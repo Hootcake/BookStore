@@ -3,13 +3,14 @@ package com.matt.bookapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,14 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class HomePageActivity extends AppCompatActivity{
-    private FirebaseAuth firebaseAuth;
-    private DatabaseReference databaseReference;
-    private FirebaseDatabase firebaseDatabase;
-    private ListView listView;
-    private String userID;
-    private TextView textViewUserEmail;
-
+public class AdjustStock extends AppCompatActivity {
+    FirebaseAuth firebaseAuth;
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(com.matt.bookapp.R.menu.main_menu, menu);
@@ -60,36 +55,38 @@ public class HomePageActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_page);
+        setContentView(R.layout.activity_adjust_stock);
+    }
 
-        listView = (ListView) findViewById(R.id.listview);
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        userID = user.getUid();
-        if(userID.equals("KFuVqg2XBieNKqiY1Df5Ql7mPpy2")) {
-            Button stockBtn = (Button) findViewById(R.id.stockItems);
-            stockBtn.setVisibility(View.VISIBLE);
-            Button historyBtn = (Button) findViewById(R.id.purchaseHistory);
-            historyBtn.setVisibility(View.VISIBLE);
-            Button quantBtn = (Button) findViewById(R.id.quantLevels);
-            quantBtn.setVisibility(View.VISIBLE);
+
+    public void adjustStock(View view) {
+        final EditText stock = (EditText) findViewById(R.id.newStockLevel);
+        final EditText title = (EditText) findViewById(R.id.itemTitle);
+
+        if(stock != null && title != null){
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+            ref.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                       if (dataSnapshot.child("booklist").child(title.getText().toString()).exists()) {
+                            dataSnapshot.child("booklist").child(title.getText()
+                                .toString()).child("quantity").getRef()
+                                .setValue(Integer.parseInt(stock.getText().toString()));
+                           Toast.makeText(AdjustStock.this, "Quantity Updated", Toast.LENGTH_SHORT).show();
+                         }
+
+
+                        }
+
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                }
+            );
+
         }
-    }
-
-    public void addItem(View view) {
-        final Intent intent = new Intent(this, AddItemActivity.class);
-        startActivity(intent);
-    }
-
-    public void purchaseHistory(View view) {
-        final Intent intent  = new Intent(this, PurchaseHistoryActivity.class);
-        startActivity(intent);
-    }
-
-    public void stockLevels(View view) {
-        final Intent intent = new Intent(this, AdjustStock.class);
-        startActivity(intent);
     }
 }

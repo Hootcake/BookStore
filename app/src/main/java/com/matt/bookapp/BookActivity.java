@@ -48,16 +48,14 @@ public class BookActivity extends Activity {
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("booklist");
 
 
-    @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(com.matt.bookapp.R.menu.main_menu, menu);
         return true;
     }
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem book){
-        switch (book.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case com.matt.bookapp.R.id.editProfile:
                 finish();
                 Intent intent = new Intent(this, ProfileActivity.class);
@@ -75,10 +73,11 @@ public class BookActivity extends Activity {
                 this.startActivity(intent2);
                 return true;
             default:
-                return super.onOptionsItemSelected(book);
+                return super.onOptionsItemSelected(item);
 
         }
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -28,6 +28,7 @@
         <activity android:name=".AddItemActivity" />
         <activity android:name=".CartActivity" />
         <activity android:name=".PurchaseHistoryActivity" />
+        <activity android:name=".AdjustStock" />
     </application>
 
 </manifest>
